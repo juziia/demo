@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+			               http://www.springframework.org/schema/context/spring-context.xsd"
+        default-autowire="byName">
+
+    <bean id="dao" class="com.git.spring.service.UserDaoImpl"></bean>
+
+    <bean id="dao2" class="com.git.spring.service.UserDaoImpl2"></bean>
+
+    <!-- 开启支持注解配置 -->
+    <context:annotation-config></context:annotation-config>
+    <!--
+        将UserService交给IOC容器进行管理
+        id: bean的唯一标识,不能重复
+        name: bean的别名,可以有多个
+        class: bean的全限定类名
+
+        <property> 配置bean中所依赖的属性
+        name: 属性在bean中对应的set方法后的名称
+        ref: 引用IOC容器中id为dao的bean
+    -->
+    <bean id="service" autowire="constructor" class="com.git.spring.service.UserService">
+    </bean>
+
+
+</beans>

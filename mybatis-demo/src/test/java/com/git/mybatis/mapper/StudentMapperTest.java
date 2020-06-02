@@ -2,6 +2,7 @@ package com.git.mybatis.mapper;
 
 import com.git.mybatis.entity.Clazz;
 import com.git.mybatis.entity.Student;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentMapperTest {
 
@@ -87,11 +89,14 @@ public class StudentMapperTest {
         list.add(new Student(1011l,"小王",17,"男",2));
         list.add(new Student(1012l,"小乔",20,"男",1));
 
-        studentMapper.addStudents(list);
-        session.commit();
-        StringUtils.join();
 
-        ;
+        String[] array = new String[list.size()];
+
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i).getStudentName();
+        }
+        System.out.println(Arrays.toString(array));
+
     }
 
 }
