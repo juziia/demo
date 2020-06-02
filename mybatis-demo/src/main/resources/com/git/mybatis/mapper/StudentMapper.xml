@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.git.mybatis.mapper.StudentMapper">
+
+    <resultMap id="StudentMap" type="com.git.mybatis.entity.Student" >
+        <!-- 配置主键 -->
+        <id column="id" property="id"></id>
+        <!-- 配置其他字段与属性的映射关系 -->
+        <result column="student_name" property="studentName"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+        <result column="clazz" property="clazz"/>
+        <association fetchType="eager"  column="clazz"  property="clazzObj" javaType="com.git.mybatis.entity.Clazz"
+                     select="com.git.mybatis.mapper.ClazzMapper.findById"
+        >
+        </association>
+    </resultMap>
+
+    <insert id="addStudents" parameterType="java.util.List">
+        <if test="students != null and students.size != 0">
+            insert into tb_student(id,student_name,age,sex,clazz)
+            values
+            <foreach collection="students" item="student" separator="," >
+                ( #{student.id},#{student.studentName},#{student.age},#{student.sex},#{student.clazz} )
+            </foreach>
+        </if>
+    </insert>
+
+    <select id="selectAll"  useCache="false"  resultMap="StudentMap">
+        SELECT
+            id ,
+            student_name,
+            age,
+            sex,
+            clazz
+
+         from tb_student
+    </select>
+
+    <select id="selectByClazzId" resultMap="StudentMap">
+
+        select * from tb_student where clazz = #{clazzId}
+    </select>
+    <select id="findByIdOrClazzId" resultType="com.git.mybatis.entity.Student">
+        select * from tb_student
+        <where>
+            <if test="id != 0">
+                 and id = #{id}
+            </if>
+            <if test="clazzId !=0 ">
+                and clazz = #{clazzId}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findByIds" resultType="com.git.mybatis.entity.Student">
+
+        select * from tb_student
+        <where>
+            <if test="ids != null and ids.size != 0">
+                id in
+                <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                     #{id}
+                </foreach>
+            </if>
+        </where>
+
+    </select>
+
+</mapper>

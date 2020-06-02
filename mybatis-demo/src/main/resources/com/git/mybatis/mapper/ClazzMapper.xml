@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.git.mybatis.mapper.ClazzMapper">
+
+    <resultMap id="ClazzMap" type="com.git.mybatis.entity.Clazz">
+        <id column="id" property="id"></id>
+        <result column="clazz_name" property="clazzName"/>
+        <collection column="id" fetchType="lazy" ofType="com.git.mybatis.entity.Student" property="students"
+                    select="com.git.mybatis.mapper.StudentMapper.selectByClazzId"/>
+    </resultMap>
+
+
+    <select id="findById" resultType="com.git.mybatis.entity.Clazz">
+        select * from tb_clazz where id = #{id}
+    </select>
+
+
+    <select id="findAll" resultMap="ClazzMap">
+        select * from tb_clazz
+    </select>
+
+
+</mapper>
