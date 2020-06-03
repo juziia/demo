@@ -24,7 +24,7 @@
         name: 属性在bean中对应的set方法后的名称
         ref: 引用IOC容器中id为dao的bean
     -->
-    <bean id="service" autowire="constructor" class="com.git.spring.service.UserService">
+    <bean id="service"  autowire="constructor" class="com.git.spring.service.UserService">
     </bean>
 
 

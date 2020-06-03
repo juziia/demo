@@ -1,9 +1,11 @@
 package com.git.spring.service;
 
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Scope("prototype")
 public class UserDaoImpl2 implements UserDao {
 
     public void test() {
