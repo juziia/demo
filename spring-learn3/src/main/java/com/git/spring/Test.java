@@ -1,5 +1,6 @@
 package com.git.spring;
 
+import com.git.spring.aop.AopAspect;
 import com.git.spring.dao.TestDao;
 import com.git.spring.dao.impl.TestDaoImpl;
 import com.git.spring.config.AppConfig;
@@ -20,7 +21,7 @@ public class Test {
 
         // 获取对象
         TestService testService = (TestService) context.getBean("testService");
-
+        System.out.println(testService);
         testService.test();
         System.out.println("===================");
         testService.testString("",1);
@@ -39,6 +40,15 @@ public class Test {
 
 
         testDaoImpl.test();
+        System.out.println("==================================");
+
+        AopAspect aopAspect = (AopAspect) context.getBean("aopAspect");
+        AopAspect aopAspect1 = (AopAspect) context.getBean("aopAspect");
+        AopAspect aopAspect2 = (AopAspect) context.getBean("aopAspect");
+
+        System.out.println(aopAspect);
+        System.out.println(aopAspect1);
+        System.out.println(aopAspect2);
 
     }
 

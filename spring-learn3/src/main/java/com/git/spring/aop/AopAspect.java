@@ -43,7 +43,8 @@ public class AopAspect {
 
 //    @Pointcut("target(com.git.spring.dao.TestDao)")
 //    @Pointcut("@within(com.git.spring.aop.annotation.Juzi)")
-    @Pointcut("@annotation(com.git.spring.aop.annotation.Juzi)")
+//    @Pointcut("@annotation(com.*.spring.aop.annotation.Juzi)")
+    @Pointcut("execution(* a*(..))")
     public void pointcut(){}
 
 
@@ -60,7 +61,7 @@ public class AopAspect {
             环绕通知: 围绕连接点执行,这也是最有用的切面方式
      */
     @Before("pointcut()")
-    public void beforeAdvice(){
+    public void beforeAdvice(JoinPoint joinPoint){
         System.out.println("前置通知");
     }
 
@@ -81,11 +82,22 @@ public class AopAspect {
     }
 
 
-   /* @Around("pointcut()")
+    @Pointcut("execution(public * com.git.spring.*.*.*(..))")
+    public void pointcutExecution(){
+
+    }
+
+    @Around("pointcutExecution()")
     public void aroundAdvice(ProceedingJoinPoint proceedingJoinPoint){
+        // 代理对象  proceedingJoinPoint.getThis()
+        System.out.println(proceedingJoinPoint.getThis().getClass().getName());
+        // 目标对象 proceedingJoinPoint.getTarget()
+        System.out.println(proceedingJoinPoint.getTarget().getClass().getName());
 
         System.out.println("前置通知2222");
+
         try {
+            System.out.println(proceedingJoinPoint.getThis());
             proceedingJoinPoint.proceed();
             System.out.println("后置通知2222");
         } catch (Throwable throwable) {
@@ -93,6 +105,6 @@ public class AopAspect {
             throwable.printStackTrace();
         }
         System.out.println("最终通知2222");
-    }*/
+    }
 
 }
