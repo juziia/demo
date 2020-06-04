@@ -42,13 +42,7 @@ public class Test {
         testDaoImpl.test();
         System.out.println("==================================");
 
-        AopAspect aopAspect = (AopAspect) context.getBean("aopAspect");
-        AopAspect aopAspect1 = (AopAspect) context.getBean("aopAspect");
-        AopAspect aopAspect2 = (AopAspect) context.getBean("aopAspect");
 
-        System.out.println(aopAspect);
-        System.out.println(aopAspect1);
-        System.out.println(aopAspect2);
 
     }
 

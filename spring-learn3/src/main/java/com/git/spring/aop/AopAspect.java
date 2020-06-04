@@ -1,23 +1,38 @@
 package com.git.spring.aop;
 
+import com.git.spring.dao.TestDao;
+import com.git.spring.dao.impl.TestDaoImpl;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
 /**
  *  切面的作用: 用于定义将通知应用到哪些连接点上,连接点就是满足切入点定义规则的一个方法
  */
-@Aspect     // 声明当前类是一个切面类          切面中包含 切入点以及通知
+//@Aspect     // 声明当前类是一个切面类          切面中包含 切入点以及通知
+//@Aspect("perthis(this(com.git.spring.dao.TestDao))")      // 当前对象的类型
+//@Aspect("pertarget(target(com.git.spring.dao.TestDao))")
+@Aspect
 @Component
+//@Scope("prototype")
 public class AopAspect {
+
+    @DeclareParents(value ="com.git.spring.dao.*.*",defaultImpl = TestDaoImpl.class)
+    private TestDao dao;
 
     /**
      * 切入点: 切入点就是对连接点的一组定义规则
      * 连接点: 在Spring AOP中连接点就是满足切入点定义规则的方法
      */
 
+    @Pointcut("within(com.git.spring.dao.*.*)")
+    public void pointcutWithin(){}
+
+    @Pointcut("execution(* com.git.spring.dao.impl.TestDaoImpl.test(..))")
+    public void pointcutExecution2(){}
 
     // 定义切入点
 
@@ -44,8 +59,14 @@ public class AopAspect {
 //    @Pointcut("target(com.git.spring.dao.TestDao)")
 //    @Pointcut("@within(com.git.spring.aop.annotation.Juzi)")
 //    @Pointcut("@annotation(com.*.spring.aop.annotation.Juzi)")
-    @Pointcut("execution(* a*(..))")
+    @Pointcut("execution(* com.git.spring.*.*.*.*(..))")
     public void pointcut(){}
+
+    @Pointcut("execution(* com.git.spring.dao.impl.*.*(..))")
+    public void pointcut2(){}
+
+
+
 
 
     /** 通知: 就是定义了在连接前后所需要执行的代码,
@@ -60,8 +81,9 @@ public class AopAspect {
 
             环绕通知: 围绕连接点执行,这也是最有用的切面方式
      */
-    @Before("pointcut()")
+    @Before("pointcut() || pointcut2() || @annotation(com.git.spring.aop.annotation.Juzi)")
     public void beforeAdvice(JoinPoint joinPoint){
+        System.out.println(this.hashCode());
         System.out.println("前置通知");
     }
 
@@ -87,7 +109,7 @@ public class AopAspect {
 
     }
 
-    @Around("pointcutExecution()")
+    /*@Around("pointcutExecution()")
     public void aroundAdvice(ProceedingJoinPoint proceedingJoinPoint){
         // 代理对象  proceedingJoinPoint.getThis()
         System.out.println(proceedingJoinPoint.getThis().getClass().getName());
@@ -105,6 +127,6 @@ public class AopAspect {
             throwable.printStackTrace();
         }
         System.out.println("最终通知2222");
-    }
+    }*/
 
 }

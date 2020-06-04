@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--  配置动态代理的方式 false JDK动态代理 true Cglib动态代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="false"></aop:aspectj-autoproxy>
+
+    <bean id="xmlAopAspect" class="com.git.spring.aop.XmlAopAspect"></bean>
+
+    <bean id="testService" class="com.git.spring.service.TestService"></bean>
+
+    <bean id="testDaoImpl" class="com.git.spring.dao.impl.TestDaoImpl"></bean>
+
+    <!-- 当然,通过aop的配置标签也能配置Spring AOP的动态代理方式 -->
+    <aop:config>
+        <!-- 配置切入点 -->
+        <aop:pointcut id="pointcutExecution" expression="execution(public * com.git.spring.service.*.*(..))"/>
+
+        <!-- 配置切面 -->
+        <aop:aspect id="aspect" ref="xmlAopAspect">
+            <!-- 前置通知 -->
+            <aop:before pointcut-ref="pointcutExecution" method="beforeAdvice"/>
+            <!-- 后置通知 -->
+            <aop:after pointcut-ref="pointcutExecution"  method="afterAdvice"/>
+            <!-- 异常通知 -->
+            <aop:after-throwing pointcut-ref="pointcutExecution" method="afterThrowing"/>
+            <!-- 最终通知 -->
+            <aop:after-returning pointcut-ref="pointcutExecution" method="afterReturning"/>
+
+            <!-- 引介,对一个类动态扩展一个接口,并且可以指定接口的默认实现 -->
+           <!-- <aop:declare-parents types-matching="com.git.spring.dao.impl.UserDao"
+                                 implement-interface="com.git.spring.dao.TestDao"
+                                 default-impl="com.git.spring.dao.impl.TestDaoImpl"></aop:declare-parents>-->
+        </aop:aspect>
+
+        <!-- 配置切面 -->
+        <aop:aspect id="daoAspect" ref="xmlAopAspect">
+            <!--  环绕通知 -->
+            <aop:around method="aroundAdvice" pointcut="target(com.git.spring.dao.TestDao)"/>
+        </aop:aspect>
+
+    </aop:config>
+
+
+</beans>
