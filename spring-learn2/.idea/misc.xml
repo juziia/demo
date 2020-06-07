@@ -6,6 +6,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/../spring-learn3/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../code/java/demo/demo/pom.xml" />
+        <option value="$PROJECT_DIR$/../simulate-jdk-proxy/pom.xml" />
       </list>
     </option>
   </component>

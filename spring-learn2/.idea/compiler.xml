@@ -8,7 +8,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="spring-learn3" />
         <module name="spring-learn2" />
+        <module name="simulate-jdk-proxy" />
+        <module name="demo" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="demo" options="-parameters" />
+    </option>
   </component>
 </project>
